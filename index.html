@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ka" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ვაკიჯვრის კალმახი - პრემიუმ ხარისხის პროდუქცია</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Noto+Sans+Georgian:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans Georgian', sans-serif;
+            background-color: #FDFCFB;
+            color: #3a3532;
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #heroVideo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .section-bg-textured {
+            background-color: #FDFCFB;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f0ede9' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #B58A61;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .gallery-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        .gallery-item img {
+            transition: transform 0.4s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        .gallery-item:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header id="header" class="bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-gray-800 font-serif">ვაკიჯვრის კალმახი</a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#story" class="nav-link text-gray-600 hover:text-gray-900">ჩვენი ისტორია</a>
+                <a href="#products" class="nav-link text-gray-600 hover:text-gray-900">პროდუქცია</a>
+                <a href="#gallery" class="nav-link text-gray-600 hover:text-gray-900">გალერეა</a>
+                <a href="#contact" class="nav-link text-gray-600 hover:text-gray-900">კონტაქტი</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#story" class="block py-2 text-gray-600 hover:text-gray-900">ჩვენი ისტორია</a>
+            <a href="#products" class="block py-2 text-gray-600 hover:text-gray-900">პროდუქცია</a>
+            <a href="#gallery" class="block py-2 text-gray-600 hover:text-gray-900">გალერეა</a>
+            <a href="#contact" class="block py-2 text-gray-600 hover:text-gray-900">კონტაქტი</a>
+        </div>
+    </header>
+
+    <!-- Hero Section with Video -->
+    <section id="home" class="hero-section">
+        <video autoplay loop muted playsinline id="heroVideo" src="https://videos.pexels.com/video-files/30598008/13101397_1920_1080_120fps.mp4"></video>
+        <div class="hero-overlay text-white">
+            <div class="p-8">
+                <h1 class="text-5xl md:text-7xl font-bold mb-4">ვაკიჯვრის კალმახის ფერმა</h1>
+                <p class="text-xl md:text-2xl mb-8">უმაღლესი ხარისხის ცოცხალი კალმახი და ქვირითი.</p>
+                <a href="#products" class="bg-[#B58A61] hover:bg-[#a47b55] text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-lg">პროდუქციის ნახვა</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Our Story Section -->
+        <section id="story" class="py-20 md:py-32 section-bg-textured">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in">
+                        <img src="https://github.com/aroshidze/trout/blob/main/103876086_2946362602065417_7661229446404341429_n.jpg?raw=true" alt="ფერმის გარემო" class="rounded-lg shadow-xl w-full" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                    </div>
+                    <div class="fade-in">
+                        <h2 class="text-4xl font-bold text-gray-800 mb-6">ხარისხის მემკვიდრეობა</h2>
+                        <p class="text-gray-600 mb-4 leading-relaxed">
+                            სოფელ ვაკიჯვრის სუფთა ბუნებაში ჩაფლული ჩვენი მეურნეობა ათწლეულებია, რაც უმაღლესი ხარისხის კალმახის მოშენებითაა დაკავებული. ჩვენი მთავარი მიზანია, შევინარჩუნოთ ბუნებრივი გარემო და მოგაწოდოთ ეკოლოგიურად სუფთა პროდუქტი.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed">
+                            ჩვენი კალმახი იზრდება კამკამა, გამდინარე წყალში და იკვებება საგულდაგულოდ შერჩეული, ნატურალური საკვებით. ეს არის ჩვენი გარანტია, რომ თქვენ მიიღებთ საუკეთესო გემოსა და ხარისხს.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Products Section -->
+        <section id="products" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4 fade-in">ჩვენი პროდუქცია</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto fade-in">გთავაზობთ პრემიუმ ხარისხის, ნატურალურ პროდუქტს პირდაპირ ჩვენი ფერმიდან.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Live Trout Card -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden product-card fade-in">
+                        <img src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_l3in1nl3in1nl3in.png?raw=true" alt="ცოცხალი კალმახი" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                        <div class="p-8">
+                            <h3 class="text-3xl font-bold mb-4">ცოცხალი კალმახი</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                ჩვენი ცისარტყელა კალმახი გამოირჩევა საუკეთესო გემოვნური თვისებებით, მყარი ტექსტურითა და ჯანმრთელობისთვის სასარგებლო შემადგენლობით. იდეალურია როგორც შესაწვავად, ასევე სხვადასხვა კერძის მოსამზადებლად.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Caviar Card -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden product-card fade-in">
+                        <img src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_m04ycum04ycum04y.png?raw=true" alt="კალმახის ქვირითი" class="w-full h-64 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                        <div class="p-8">
+                            <h3 class="text-3xl font-bold mb-4">კალმახის ქვირითი</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                ნატურალური, მსუბუქად დამარილებული კალმახის ქვირითი. ეს არის ნამდვილი დელიკატესი, რომელიც მდიდარია ვიტამინებითა და ომეგა-3-ით. გამოირჩევა სასიამოვნო გემოთი და ქარვისფერი შეფერილობით.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="py-20 md:py-32 section-bg-textured">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4 fade-in">გალერეა</h2>
+                <p class="text-gray-600 mb-12 max-w-2xl mx-auto fade-in">ჩვენი ფერმის, ბუნებისა და პროდუქციის ამსახველი კადრები.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="gallery-item rounded-lg bg-white fade-in">
+                        <img src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_juz1yhjuz1yhjuz1.png?raw=true" alt="კალმახი" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                    </div>
+                    <div class="gallery-item rounded-lg bg-white fade-in">
+                        <img src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_h8yjs1h8yjs1h8yj.png?raw=true" alt="კალმახის ქვირითი" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                    </div>
+                    <div class="gallery-item rounded-lg bg-white fade-in">
+                        <img src="https://github.com/aroshidze/trout/blob/main/kalmakhi_sanashene_seleqcia_982672727912190101920029_020282910019102_28289190019101.jpg?raw=true" alt="კალმახის მეურნეობა" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                    </div>
+                    <div class="gallery-item rounded-lg bg-white fade-in">
+                        <img src="https://github.com/aroshidze/trout/blob/main/7_1.jpg?raw=true" alt="კალმახი ახლოდან" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                    </div>
+                    <div class="gallery-item rounded-lg bg-white fade-in">
+                        <img src="https://github.com/aroshidze/trout/blob/main/images.jpg?raw=true" alt="კალმახი" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                    </div>
+                    <div class="gallery-item rounded-lg bg-white fade-in">
+                         <img src="https://github.com/aroshidze/trout/blob/main/images%20(1).jpg?raw=true" alt="კალმახი" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                    </div>
+                     <div class="gallery-item rounded-lg bg-white fade-in">
+                        <img src="https://images.unsplash.com/photo-1473042904451-00171c69419a?q=80&w=600&h=400&auto=format&fit=crop" alt="მწვანე გარემო" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                    </div>
+                    <div class="gallery-item rounded-lg bg-white fade-in">
+                        <img src="https://images.unsplash.com/photo-1599421497992-9362529624b0?q=80&w=600&h=400&auto=format&fit=crop" alt="კალმახი წყალში" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400';">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & Location Section -->
+        <section id="contact" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4 fade-in">დაგვიკავშირდით</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto fade-in">პროდუქციის შესაძენად ან დამატებითი ინფორმაციისთვის, გთხოვთ, დაგვიკავშირდეთ.</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <div class="fade-in">
+                        <div class="rounded-lg overflow-hidden shadow-xl h-96 mb-8">
+                           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23805.86475712111!2d42.74100863955078!3d41.905625000000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40581f110534267b%3A0xe1b36952e4f62021!2sVakijvari!5e0!3m2!1sen!2sge!4v1661175647513!5m2!1sen!2sge" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                        <div class="space-y-4 text-gray-700">
+                            <p><strong>მისამართი:</strong> სოფელი ვაკიჯვარი, გურია, საქართველო</p>
+                            <p><strong>ტელეფონი:</strong> +995 555 123 456</p>
+                            <p><strong>სამუშაო საათები:</strong> ყოველდღე, 10:00 - 19:00</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-xl fade-in">
+                        <h3 class="text-2xl font-bold mb-6 text-gray-800">მოგვწერეთ შეკითხვა</h3>
+                        <form id="contactForm">
+                            <div class="mb-4">
+                                <label for="name" class="block text-gray-600 mb-2">სახელი</label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B58A61]" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="email" class="block text-gray-600 mb-2">ელ. ფოსტა</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B58A61]" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="block text-gray-600 mb-2">შეტყობინება</label>
+                                <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B58A61]" required></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-[#B58A61] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#a47b55] transition duration-300">გაგზავნა</button>
+                            <p id="form-message" class="mt-4 text-center"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2024 ვაკიჯვრის კალმახის ფერმა. ყველა უფლება დაცულია.</p>
+            <p class="text-sm text-gray-400 mt-2">შექმნილია სიყვარულით.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('py-2');
+                    header.classList.remove('py-4');
+                } else {
+                    header.classList.add('py-4');
+                    header.classList.remove('py-2');
+                }
+            });
+
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOptions = {
+                threshold: 0.2,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('visible');
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+
+            faders.forEach(fader => {
+                appearOnScroll.observe(fader);
+            });
+            
+            const contactForm = document.getElementById('contactForm');
+            const formMessage = document.getElementById('form-message');
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                formMessage.textContent = 'გმადლობთ შეტყობინებისთვის! ჩვენ მალე დაგიკავშირდებით.';
+                formMessage.style.color = 'green';
+                contactForm.reset();
+                setTimeout(() => {
+                    formMessage.textContent = '';
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>
