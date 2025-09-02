@@ -25,7 +25,7 @@
             --color-text-light: #E0E1DD; /* Lustrous Silver */
             --color-accent: #415A77; /* Muted River Blue */
             --color-accent-hover: #5A7AAD; /* Brighter River Blue */
-            --color-green-accent: #2C5A41; /* Forest Green Accent */
+            --color-success: #2C5A41; /* Forest Green Accent for success messages */
         }
 
         body {
@@ -67,17 +67,15 @@
             color: var(--color-text-dark);
         }
 
-        /* Fix for mobile menu text color on scroll */
         .header-scrolled #mobile-menu a {
             color: var(--color-text-dark);
         }
         .header-scrolled #mobile-menu a:hover {
-            background-color: rgba(0, 0, 0, 0.05); /* A subtle dark hover for the light background */
+            background-color: rgba(0, 0, 0, 0.05); 
         }
 
-        /* When mobile menu is active, give header a background for visibility */
         .mobile-menu-active:not(.header-scrolled) {
-            background-color: rgba(13, 27, 42, 0.95); /* --color-bg with opacity */
+            background-color: rgba(13, 27, 42, 0.95);
             backdrop-filter: blur(12px);
         }
 
@@ -97,7 +95,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Modern approach for full-screen video */
+            object-fit: cover;
             z-index: -100;
         }
         .hero-overlay {
@@ -168,13 +166,29 @@
 
         /* Lightbox styles */
         .lightbox {
-            display: none; position: fixed; z-index: 1000; padding-top: 60px;
+            display: none; position: fixed; z-index: 1000;
             left: 0; top: 0; width: 100%; height: 100%; overflow: auto;
-            background-color: rgba(13, 27, 42, 0.97); /* Use deep blue bg */
+            background-color: rgba(13, 27, 42, 0.97);
+        }
+        .lightbox-content-wrapper {
+             display: flex;
+             flex-direction: column;
+             justify-content: center;
+             align-items: center;
+             height: 100%;
+             padding: 20px;
         }
         .lightbox-content {
-            margin: auto; display: block; width: 90%; max-width: 1200px;
-            max-height: 85vh; object-fit: contain; animation: zoomIn 0.5s ease;
+            display: block; width: auto; max-width: 90%;
+            max-height: 80vh; object-fit: contain; animation: zoomIn 0.5s ease;
+        }
+        #lightbox-caption {
+            margin-top: 15px;
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+            text-align: center;
+            animation: fadeInUp 0.5s ease 0.2s forwards;
+            opacity: 0;
         }
         @keyframes zoomIn {
             from {transform: scale(0.8); opacity: 0;}
@@ -207,12 +221,56 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            background-color: var(--color-text-light); /* Initial color for hero */
+            background-color: var(--color-text-light);
             transition: width 0.3s ease-in-out, background-color 0.3s ease;
         }
         .nav-link:hover::after {
             width: 100%;
         }
+
+        /* Dynamic Image Hover Effect */
+        .dynamic-img-container {
+            overflow: hidden;
+            border-radius: 0.5rem; /* Match image rounding */
+        }
+        .dynamic-img {
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .dynamic-img-container:hover .dynamic-img {
+            transform: scale(1.05);
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background-color 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        #back-to-top:hover {
+            background-color: var(--color-accent-hover);
+        }
+        #back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
     </style>
 
     <!-- JSON-LD Schema for Local Business SEO -->
@@ -266,7 +324,6 @@
                     <a href="#gallery" class="nav-link text-gray-200 transition-colors duration-300">გალერეა</a>
                     <a href="#contact" class="nav-link text-gray-200 transition-colors duration-300">კონტაქტი</a>
                 </div>
-                 <!-- Mobile Menu Button -->
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white p-1 rounded" aria-controls="mobile-menu" aria-expanded="false">
                         <span class="sr-only">მენიუს გახსნა</span>
@@ -276,7 +333,6 @@
                     </button>
                 </div>
             </div>
-            <!-- Mobile Menu -->
             <div id="mobile-menu" class="hidden md:hidden py-4">
                 <a href="#about" class="block py-3 px-4 text-center text-lg font-sans-georgian text-gray-200 hover:bg-white/10 rounded">ჩვენს შესახებ</a>
                 <a href="#products" class="block py-3 px-4 text-center text-lg font-sans-georgian text-gray-200 hover:bg-white/10 rounded">პროდუქცია</a>
@@ -304,7 +360,7 @@
             <div class="container mx-auto px-6">
                 <div class="grid md:grid-cols-2 gap-20 items-center">
                     <div class="animate-on-scroll">
-                        <h2 class="text-4xl md:text-5xl font-bold font-sans-georgian text-gray-800 mb-6" style="color: var(--color-text-dark);">ჩვენი ისტორია</h2>
+                        <h2 class="text-4xl md:text-5xl font-bold font-sans-georgian mb-6" style="color: var(--color-text-dark);">ჩვენი ისტორია</h2>
                         <p class="text-lg leading-relaxed mb-4 text-gray-700">
                             ვაკიჯვრის საკალმახე, რომელიც გურიის უმშვენიერეს ბუნებაში მდებარეობს, ათწლეულების მანძილზე ინარჩუნებს ტრადიციას და მომხმარებელს სთავაზობს უმაღლესი ხარისხის, ეკოლოგიურად სუფთა პროდუქტს. ჩვენი მეურნეობა იყენებს კამკამა სამთო წყალს, რაც ჩვენს კალმახს განუმეორებელ გემოსა და კვებით ღირებულებას ანიჭებს.
                         </p>
@@ -313,8 +369,12 @@
                         </p>
                     </div>
                     <div class="relative h-[500px] animate-on-scroll" style="transition-delay: 200ms;">
-                        <img src="https://github.com/aroshidze/trout/blob/main/103876086_2946362602065417_7661229446404341429_n.jpg?raw=true" alt="ვაკიჯვრის ბუნება" class="absolute top-0 left-0 w-3/4 rounded-lg shadow-2xl object-cover h-full" loading="lazy">
-                        <img src="https://github.com/aroshidze/trout/blob/main/Natanebi_Vakidjvari.jpg?raw=true" alt="გურიის მთები" class="absolute bottom-0 right-0 w-1/2 rounded-lg shadow-2xl object-cover h-2/3 border-8 border-white" loading="lazy">
+                        <div class="dynamic-img-container absolute top-0 left-0 w-3/4 h-full shadow-2xl">
+                             <img src="https://github.com/aroshidze/trout/blob/main/103876086_2946362602065417_7661229446404341429_n.jpg?raw=true" alt="ვაკიჯვრის ბუნება" class="object-cover w-full h-full dynamic-img" loading="lazy">
+                        </div>
+                        <div class="dynamic-img-container absolute bottom-0 right-0 w-1/2 h-2/3 shadow-2xl border-8 border-white">
+                            <img src="https://github.com/aroshidze/trout/blob/main/Natanebi_Vakidjvari.jpg?raw=true" alt="გურიის მთები" class="object-cover w-full h-full dynamic-img" loading="lazy">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -327,8 +387,8 @@
                 <div class="grid md:grid-cols-2 gap-16 max-w-6xl mx-auto">
                     <!-- Product Card 1: Live Trout -->
                     <div class="bg-black/20 p-8 rounded-xl shadow-2xl transform transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_20px_50px_rgba(90,122,173,0.2)] animate-on-scroll">
-                        <div class="overflow-hidden rounded-lg mb-6">
-                            <img src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_h8yjs1h8yjs1h8yj-min.jpg?raw=true" alt="ცოცხალი ცისარტყელა კალმახი" class="w-full h-80 object-cover transform hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <div class="overflow-hidden rounded-lg mb-6 dynamic-img-container">
+                            <img src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_h8yjs1h8yjs1h8yj-min.jpg?raw=true" alt="ცოცხალი ცისარტყელა კალმახი" class="w-full h-80 object-cover dynamic-img" loading="lazy">
                         </div>
                         <h3 class="text-3xl font-bold font-sans-georgian text-white mb-3">ცოცხალი კალმახი</h3>
                         <p class="text-lg mb-8" style="color: var(--color-text-light);">
@@ -338,8 +398,8 @@
                     </div>
                     <!-- Product Card 2: Trout Caviar -->
                     <div class="bg-black/20 p-8 rounded-xl shadow-2xl transform transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_20px_50px_rgba(90,122,173,0.2)] animate-on-scroll" style="transition-delay: 200ms;">
-                        <div class="overflow-hidden rounded-lg mb-6">
-                           <img src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_m04ycum04ycum04y.jpg?raw=true" alt="კალმახის წითელი ხიზილალა" class="w-full h-80 object-cover transform hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <div class="overflow-hidden rounded-lg mb-6 dynamic-img-container">
+                           <img src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_m04ycum04ycum04y.jpg?raw=true" alt="კალმახის წითელი ხიზილალა" class="w-full h-80 object-cover dynamic-img" loading="lazy">
                         </div>
                         <h3 class="text-3xl font-bold font-sans-georgian text-white mb-3">კალმახის ხიზილალა</h3>
                         <p class="text-lg mb-8" style="color: var(--color-text-light);">
@@ -356,12 +416,12 @@
             <div class="container mx-auto px-6">
                 <h2 class="text-4xl md:text-5xl font-bold font-sans-georgian text-center mb-20 animate-on-scroll" style="color: var(--color-text-dark);">გალერეა</h2>
                 <div class="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
-                    <div class="animate-on-scroll"><img class="rounded-lg shadow-lg cursor-pointer gallery-item transition-transform duration-300 hover:scale-105" src="https://github.com/aroshidze/trout/blob/main/7_1.jpg?raw=true" alt="ვაკიჯვრის საკალმახის აუზები" loading="lazy"></div>
-                    <div class="animate-on-scroll" style="transition-delay: 100ms;"><img class="rounded-lg shadow-lg cursor-pointer gallery-item transition-transform duration-300 hover:scale-105" src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_l3in1nl3in1nl3in.png?raw=true" alt="ცოცხალი კალმახი ახლოდან" loading="lazy"></div>
-                    <div class="animate-on-scroll" style="transition-delay: 200ms;"><img class="rounded-lg shadow-lg cursor-pointer gallery-item transition-transform duration-300 hover:scale-105" src="https://github.com/aroshidze/trout/blob/main/images%20(1).jpg?raw=true" alt="შემწვარი კალმახი ბოსტნეულით" loading="lazy"></div>
-                    <div class="animate-on-scroll" style="transition-delay: 50ms;"><img class="rounded-lg shadow-lg cursor-pointer gallery-item transition-transform duration-300 hover:scale-105" src="https://github.com/aroshidze/trout/blob/main/images.jpg?raw=true" alt="კალმახი ლიმონით" loading="lazy"></div>
-                    <div class="animate-on-scroll" style="transition-delay: 150ms;"><img class="rounded-lg shadow-lg cursor-pointer gallery-item transition-transform duration-300 hover:scale-105" src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_uuedb3uuedb3uued.png?raw=true" alt="კალმახის ხიზილალა" loading="lazy"></div>
-                    <div class="animate-on-scroll" style="transition-delay: 250ms;"><img class="rounded-lg shadow-lg cursor-pointer gallery-item transition-transform duration-300 hover:scale-105" src="https://github.com/aroshidze/trout/blob/main/yoA.png?raw=true" alt="საკალმახე მეურნეობა" loading="lazy"></div>
+                    <figure class="animate-on-scroll dynamic-img-container shadow-lg"><img class="w-full block rounded-lg cursor-pointer gallery-item dynamic-img" src="https://github.com/aroshidze/trout/blob/main/7_1.jpg?raw=true" alt="ვაკიჯვრის საკალმახის აუზები" loading="lazy"></figure>
+                    <figure class="animate-on-scroll dynamic-img-container shadow-lg" style="transition-delay: 100ms;"><img class="w-full block rounded-lg cursor-pointer gallery-item dynamic-img" src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_l3in1nl3in1nl3in.png?raw=true" alt="ცოცხალი კალმახი ახლოდან" loading="lazy"></figure>
+                    <figure class="animate-on-scroll dynamic-img-container shadow-lg" style="transition-delay: 200ms;"><img class="w-full block rounded-lg cursor-pointer gallery-item dynamic-img" src="https://github.com/aroshidze/trout/blob/main/images%20(1).jpg?raw=true" alt="შემწვარი კალმახი ბოსტნეულით" loading="lazy"></figure>
+                    <figure class="animate-on-scroll dynamic-img-container shadow-lg" style="transition-delay: 50ms;"><img class="w-full block rounded-lg cursor-pointer gallery-item dynamic-img" src="https://github.com/aroshidze/trout/blob/main/images.jpg?raw=true" alt="კალმახი ლიმონით" loading="lazy"></figure>
+                    <figure class="animate-on-scroll dynamic-img-container shadow-lg" style="transition-delay: 150ms;"><img class="w-full block rounded-lg cursor-pointer gallery-item dynamic-img" src="https://github.com/aroshidze/trout/blob/main/Gemini_Generated_Image_uuedb3uuedb3uued.png?raw=true" alt="კალმახის ხიზილალა" loading="lazy"></figure>
+                    <figure class="animate-on-scroll dynamic-img-container shadow-lg" style="transition-delay: 250ms;"><img class="w-full block rounded-lg cursor-pointer gallery-item dynamic-img" src="https://github.com/aroshidze/trout/blob/main/yoA.png?raw=true" alt="საკალმახე მეურნეობა" loading="lazy"></figure>
                 </div>
             </div>
         </section>
@@ -386,7 +446,8 @@
                             <p class="text-lg" style="color: var(--color-text-light);"><strong>ელ. ფოსტა:</strong> <a href="mailto:info@vakijvari-trout.ge" class="hover:text-[var(--color-accent-hover)] transition-colors">info@vakijvari-trout.ge</a></p>
                         </div>
                         
-                        <form action="#" method="POST" class="mt-8">
+                        <form id="contact-form" class="mt-8">
+                            <div id="form-feedback" class="hidden p-4 mb-4 text-center text-white rounded-lg" style="background-color: var(--color-success);"></div>
                             <div class="mb-4">
                                 <label for="name" class="sr-only">სახელი</label>
                                 <input type="text" id="name" name="name" placeholder="თქვენი სახელი" class="w-full px-4 py-3 bg-black/20 text-white border border-transparent rounded-lg transition-colors form-input" required>
@@ -419,17 +480,29 @@
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close" role="button" aria-label="Close lightbox">&times;</span>
         <span class="lightbox-nav lightbox-prev" role="button" aria-label="Previous image">&#10094;</span>
-        <img class="lightbox-content" id="lightbox-img" alt="Enlarged gallery image">
+        <div class="lightbox-content-wrapper">
+             <img class="lightbox-content" id="lightbox-img" alt="Enlarged gallery image">
+             <div id="lightbox-caption"></div>
+        </div>
         <span class="lightbox-nav lightbox-next" role="button" aria-label="Next image">&#10095;</span>
     </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" aria-label="Scroll to top">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const header = document.getElementById('main-header');
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const backToTopButton = document.getElementById('back-to-top');
+            const contactForm = document.getElementById('contact-form');
 
-            // Mobile Menu Toggle with ARIA attributes
+            // Mobile Menu Toggle
             mobileMenuButton.addEventListener('click', () => {
                 const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
                 mobileMenu.classList.toggle('hidden');
@@ -437,7 +510,6 @@
                 header.classList.toggle('mobile-menu-active', !isExpanded);
             });
 
-            // Close mobile menu when a link is clicked
             mobileMenu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
                     mobileMenu.classList.add('hidden');
@@ -446,7 +518,7 @@
                 });
             });
             
-            // Header scroll effect
+            // Header scroll & Back to Top Button logic
             const scrollOffset = 50;
             window.addEventListener('scroll', () => {
                 if (window.scrollY > scrollOffset) {
@@ -454,9 +526,18 @@
                 } else {
                     header.classList.remove('header-scrolled');
                 }
+                if (window.scrollY > 400) {
+                    backToTopButton.classList.add('show');
+                } else {
+                    backToTopButton.classList.remove('show');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            // On-scroll animation logic using IntersectionObserver
+            // On-scroll animation
             const animatedElements = document.querySelectorAll('.animate-on-scroll');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -467,23 +548,25 @@
             }, { threshold: 0.1 });
             animatedElements.forEach(element => observer.observe(element));
 
-            // Lightbox Gallery Logic
+            // Lightbox Gallery Logic with Captions
             const galleryItems = document.querySelectorAll('.gallery-item');
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
             const closeBtn = document.querySelector('.lightbox-close');
             const prevBtn = document.querySelector('.lightbox-prev');
             const nextBtn = document.querySelector('.lightbox-next');
             let currentIndex = 0;
-            const images = Array.from(galleryItems).map(item => item.src);
+            const images = Array.from(galleryItems).map(item => ({src: item.src, alt: item.alt}));
 
             function showImage(index) {
                 if (index < 0) index = images.length - 1;
                 if (index >= images.length) index = 0;
                 currentIndex = index;
-                lightboxImg.src = images[currentIndex];
+                lightboxImg.src = images[currentIndex].src;
+                lightboxCaption.textContent = images[currentIndex].alt;
                 lightbox.style.display = 'block';
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                document.body.style.overflow = 'hidden';
             }
 
             function hideLightbox() {
@@ -504,8 +587,23 @@
                     else if (e.key === 'ArrowRight') showImage(currentIndex + 1);
                 }
             });
+
+            // Contact Form Submission Feedback
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const feedbackEl = document.getElementById('form-feedback');
+                feedbackEl.textContent = 'გმადლობთ, თქვენი შეტყობინება გაგზავნილია!';
+                feedbackEl.classList.remove('hidden');
+                
+                // Reset form and hide message after a few seconds
+                setTimeout(() => {
+                    contactForm.reset();
+                    feedbackEl.classList.add('hidden');
+                }, 4000);
+            });
         });
     </script>
 
 </body>
 </html>
+
